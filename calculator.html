@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 3;
+            padding: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #65656b;
+        }
+
+        .calculator {
+            width: 300px;
+            background: #ddd3d3;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .display {
+            width: 100%;
+            height: 50px;
+            background: #eaeaea;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding: 0 10px;
+            font-size: 1.2em;
+            padding: 5px;
+            overflow-x: auto;
+        }
+
+        .input-box{
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+            margin-bottom: 10px;
+
+        }
+
+        .input-box::placeholder{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            padding-left: 6rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .button {
+            height: 50px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background: #0056b3;
+        }
+
+        .button.clear {
+            background: #dc3545;
+        }
+
+        .button.clear:hover {
+            background: #a71d2a;
+        }
+
+        .button.enter {
+            background: #28a745;
+        }
+
+        .button.enter:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <input type="text" class="input-box" id="inputBox" placeholder="Enter equation here">
+        <div class="grid">
+            <button class="button" onclick="appendValue('7')">7</button>
+            <button class="button" onclick="appendValue('8')">8</button>
+            <button class="button" onclick="appendValue('9')">9</button>
+            <button class="button" onclick="appendValue('/')">/</button>
+            <button class="button" onclick="appendValue('4')">4</button>
+            <button class="button" onclick="appendValue('5')">5</button>
+            <button class="button" onclick="appendValue('6')">6</button>
+            <button class="button" onclick="appendValue('*')">*</button>
+            <button class="button" onclick="appendValue('1')">1</button>
+            <button class="button" onclick="appendValue('2')">2</button>
+            <button class="button" onclick="appendValue('3')">3</button>
+            <button class="button" onclick="appendValue('-')">-</button>
+            <button class="button" onclick="appendValue('0')">0</button>
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button enter" onclick="calculate()">=</button>
+            <button class="button" onclick="appendValue('+')">+</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        const inputBox = document.getElementById('inputBox');
+
+        // To update the display while typing
+        inputBox.addEventListener('input', () => {
+            display.textContent = inputBox.value || '0';
+        });
+
+        // To append the value
+        function appendValue(value) {
+            inputBox.value += value;
+            display.textContent = inputBox.value;
+        }
+
+        // To clear the display and input box
+        function clearDisplay() {
+            inputBox.value = '';
+            display.textContent = '0';
+        }
+
+        // To calculate the result
+        function calculate() {
+            try {
+                const result = eval(inputBox.value);
+                display.textContent = result;
+            } catch (error) {
+                display.textContent = 'Error';
+            }
+        }
+
+        // To privide keyboard inputs
+        document.addEventListener('keydown', (event) => {
+            if ((event.key >= '0' && event.key <= '9') || ['+', '-', '*', '/'].includes(event.key)) {
+                appendValue(event.key);
+            } else if (event.key === 'Enter') {
+                calculate();
+            } else if (event.key === 'Backspace') {
+                inputBox.value = inputBox.value.slice(0, -1);
+                display.textContent = inputBox.value || '0';
+            } else if (event.key === 'Escape') {
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html
